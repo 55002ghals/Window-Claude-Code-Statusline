@@ -1,6 +1,10 @@
 function formatResetTime(resetsAt, short) {
   if (!resetsAt) return '--';
-  const d = new Date(resetsAt);
+  // Claude Code sends Unix epoch SECONDS per official docs.
+  // Accept ISO string as fallback for test fixtures.
+  const d = typeof resetsAt === 'number'
+    ? new Date(resetsAt * 1000)
+    : new Date(resetsAt);
   if (isNaN(d.getTime())) return '--';
   const hh = String(d.getHours()).padStart(2, '0');
   const mm = String(d.getMinutes()).padStart(2, '0');
