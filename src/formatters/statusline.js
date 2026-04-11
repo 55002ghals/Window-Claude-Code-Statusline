@@ -1,17 +1,4 @@
-const { getMcpCount, generateMcpDetailFile } = require('./mcp-detail');
-
-const LINKS = {
-  model: 'https://platform.claude.com/docs/en/docs/about-claude/models',
-  context: 'https://code.claude.com/docs/en/context-window',
-  cost: 'https://platform.claude.com/docs/en/docs/about-claude/pricing',
-  cache: 'https://platform.claude.com/docs/en/docs/build-with-claude/prompt-caching',
-  limits: 'https://platform.claude.com/docs/en/api/rate-limits',
-};
-
-function osc8(url, text) {
-  if (!url) return text;
-  return `\x1b]8;;${url}\x1b\\${text}\x1b]8;;\x1b\\`;
-}
+const { getMcpCount } = require('./mcp-detail');
 
 function formatBar(usedPct) {
   const filled = usedPct != null ? Math.round(usedPct / 5) : 0;
@@ -33,28 +20,28 @@ function formatStatusLine(session, tknCost, monCost, cacheHit, cpu, mem, config)
   // Line 1: Model + rate limits
   const line1Parts = [];
   if (d.showModel) {
-    line1Parts.push(osc8(LINKS.model, `Model : ${session.model}`));
+    line1Parts.push(`Model : ${session.model}`);
   }
   if (d.showLimits) {
-    line1Parts.push(osc8(LINKS.limits, formatLimit('5h', session.fiveHour)));
-    line1Parts.push(osc8(LINKS.limits, formatLimit('7d', session.sevenDay)));
+    line1Parts.push(formatLimit('5h', session.fiveHour));
+    line1Parts.push(formatLimit('7d', session.sevenDay));
   }
 
   // Line 2: TknCost onwards
   const line2Parts = [];
   if (d.showTkncost) {
-    line2Parts.push(osc8(LINKS.cost, `TknCost : ${tknCost}`));
+    line2Parts.push(`TknCost : ${tknCost}`);
   }
   if (d.showMoncost) {
-    line2Parts.push(osc8(LINKS.cost, `MonCost : ${monCost}`));
+    line2Parts.push(`MonCost : ${monCost}`);
   }
   if (d.showCache) {
     const cacheStr = cacheHit != null ? `${cacheHit}%` : '--';
-    line2Parts.push(osc8(LINKS.cache, `CacheHit% : ${cacheStr}`));
+    line2Parts.push(`CacheHit% : ${cacheStr}`);
   }
   if (d.showContext) {
     const ctxStr = session.contextPercent != null ? `${session.contextPercent}%` : '--';
-    line2Parts.push(osc8(LINKS.context, `CtxWindow% : ${ctxStr}`));
+    line2Parts.push(`CtxWindow% : ${ctxStr}`);
   }
   if (d.showMem) {
     const memStr = mem != null ? `${mem}%` : '--';
@@ -66,9 +53,7 @@ function formatStatusLine(session, tknCost, monCost, cacheHit, cpu, mem, config)
   }
   if (d.showMcp) {
     const mcpCount = getMcpCount();
-    const mcpFile = generateMcpDetailFile();
-    const mcpUrl = mcpFile ? `file://${mcpFile.replace(/\\/g, '/')}` : null;
-    line2Parts.push(osc8(mcpUrl, `MCP:${mcpCount}`));
+    line2Parts.push(`MCP:${mcpCount}`);
   }
 
   const lines = [];
