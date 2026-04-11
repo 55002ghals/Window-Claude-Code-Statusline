@@ -1,0 +1,15 @@
+{
+  "name": "claude-code-statusline",
+  "version": "1.0.0",
+  "description": "Claude Code CLI StatusLine Add-on - displays model info, cost tracking, usage limits, and system resources",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "install-hook": "node install.js"
+  },
+  "keywords": ["claude-code", "statusline", "cli"],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
