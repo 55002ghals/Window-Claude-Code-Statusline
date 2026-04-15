@@ -1,3 +1,5 @@
+const path = require('path');
+
 function formatResetTime(resetsAt, short) {
   if (!resetsAt) return '--';
   // Claude Code sends Unix epoch SECONDS per official docs.
@@ -35,12 +37,19 @@ function parseSession(data) {
   const fiveHour = parseLimitEntry(rateLimits?.five_hour, true);
   const sevenDay = parseLimitEntry(rateLimits?.seven_day, false);
 
+  const currentDir = data?.workspace?.current_dir || '';
+  const dirName = currentDir ? path.basename(currentDir) : '';
+  const durationMs = data?.cost?.total_duration_ms || 0;
+
   return {
     model,
     contextPercent,
     tokens: { inputTokens, outputTokens, cacheCreation, cacheRead },
     fiveHour,
     sevenDay,
+    currentDir,
+    dirName,
+    durationMs,
   };
 }
 

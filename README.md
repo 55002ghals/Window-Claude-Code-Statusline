@@ -5,24 +5,27 @@ Claude Code CLI 하단에 모델 정보, 비용, 사용량 제한, 시스템 리
 Claude Code v2.1.6+의 네이티브 `statusLine` 기능을 활용하며, 순수 Node.js로 구현되어 외부 의존성이 없습니다. Windows, WSL, Native Linux, macOS 모두 지원합니다.
 
 ```
-Model : Opus4.6 | 5h[████████████        ] 62%(14:30) | 7d[██████              ] 30%(4/14 12:00)
-TknCost : (Sub) | MonCost : $20(Pro) | CacheHit% : 38% | CtxWindow% : 45% | MEM : 83% | CPU : 11% | MCP:3
+Model : Opus4.6 | 📁 proj_msClaudeCodeAddon | 🌿 main | 5h[████████████        ] 62%(14:30) | 7d[██████              ] 30%(4/14 12:00)
+TknCost : (Sub) | MonCost : $20(Pro) | CacheHit% : 38% | CtxWindow[█████     ] 45% | dur: 03:09:45 | MEM : 83% | CPU : 11% | MCP:2
 ```
 
-고정 2줄 포맷 — 1줄에는 Model + Rate Limit 바, 2줄에는 나머지 섹션.
+고정 2줄 포맷 — 1줄에는 Model/디렉토리/브랜치/Rate Limit 바, 2줄에는 비용·사용량·시스템 섹션.
 
 ## Features
 
 | 섹션 | 설명 |
 |------|------|
 | **Model** | 현재 사용 중인 모델 이름 |
+| **📁 Directory** | 현재 워크스페이스 디렉토리의 basename |
+| **🌿 Branch** | 현재 git 브랜치 (분리 HEAD면 short SHA) |
 | **5h / 7d Rate Limit** | 5시간/7일 사용량 프로그레스 바 + 리셋 시각 |
 | **TknCost** | 현재 세션 실시간 토큰 비용 (API) 또는 `(Sub)` (구독제) |
 | **MonCost** | 이번 달 누적 비용 (API) 또는 플랜 구독료 (구독제) |
 | **CacheHit%** | 캐시 히트 비율 |
-| **CtxWindow%** | 컨텍스트 윈도우 사용률 |
+| **CtxWindow** | 컨텍스트 윈도우 10칸 바 + 사용률 (< 70% 녹색 / 70–89% 노랑 / ≥ 90% 빨강) |
+| **dur** | 현재 세션 경과 시간 (`HH:MM:SS`) |
 | **CPU / MEM** | 시스템 CPU, 메모리 사용률 |
-| **MCP** | 설정된 MCP 서버 수 |
+| **MCP** | 설정된 MCP 서버 수 (user / local / project / claude.ai 관리형 통합 포함) |
 
 ## Requirements
 
@@ -135,11 +138,14 @@ cp config.example.json config.json
 | 플래그 | 효과 |
 |--------|------|
 | `--no-model` | 모델 정보 숨김 |
-| `--no-context` | 컨텍스트 윈도우 숨김 |
+| `--no-dir` | 현재 디렉토리 숨김 |
+| `--no-branch` | git 브랜치 숨김 |
+| `--no-context` | 컨텍스트 윈도우(바 포함) 숨김 |
 | `--no-tkncost` | 실시간 토큰 비용 숨김 |
 | `--no-moncost` | 월별 비용 숨김 |
 | `--no-cache` | 캐시 히트율 숨김 |
 | `--no-limits` | Rate limit 바 숨김 |
+| `--no-duration` | 세션 경과 시간 숨김 |
 | `--no-cpu` | CPU 사용률 숨김 |
 | `--no-mem` | 메모리 사용률 숨김 |
 | `--no-mcp` | MCP 서버 수 숨김 |

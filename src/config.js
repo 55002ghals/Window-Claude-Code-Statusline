@@ -15,6 +15,7 @@ const DEFAULT_SUBSCRIPTION_COST = {
 
 const DISPLAY_FLAGS = [
   'model', 'context', 'tkncost', 'moncost', 'cache', 'limits', 'cpu', 'mem', 'mcp',
+  'dir', 'branch', 'duration',
 ];
 
 function parseFlags(argv) {
