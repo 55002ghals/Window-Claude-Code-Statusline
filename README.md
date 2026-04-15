@@ -2,7 +2,7 @@
 
 Claude Code CLI 하단에 모델 정보, 비용, 사용량 제한, 시스템 리소스 등을 실시간으로 표시하는 StatusLine Add-on.
 
-Claude Code v2.1.6+의 네이티브 `statusLine` 기능을 활용하며, 순수 Node.js로 구현되어 외부 의존성이 없습니다.
+Claude Code v2.1.6+의 네이티브 `statusLine` 기능을 활용하며, 순수 Node.js로 구현되어 외부 의존성이 없습니다. Windows, WSL, Native Linux, macOS 모두 지원합니다.
 
 ```
 Model : Opus4.6 | 5h[████████████        ] 62%(14:30) | 7d[██████              ] 30%(4/14 12:00)
@@ -55,7 +55,21 @@ TknCost : (Sub) | MonCost : $20(Pro) | CacheHit% : 38% | CtxWindow% : 45% | MEM 
 
 - **Node.js** >= 18.0.0
 - **Claude Code** >= v2.1.6 (statusLine 기능 지원)
-- **ANSI 256-color 지원 터미널**: Windows Terminal, VS Code 터미널, PowerShell 7+, Git Bash 등
+- **ANSI 256-color 지원 터미널**
+  - Windows: Windows Terminal, VS Code 터미널, PowerShell 7+, Git Bash
+  - WSL (Ubuntu/Debian on Windows): 기본 bash/zsh 터미널, Windows Terminal WSL 탭
+  - Native Linux: GNOME Terminal, Konsole, Alacritty, kitty, xterm 등 대부분의 최신 터미널
+
+## Supported Platforms
+
+| Platform | 동작 여부 | 비고 |
+|----------|-----------|------|
+| Windows 10/11 | 지원 | Windows Terminal / VS Code 권장 |
+| WSL (WSL2 포함) | 지원 | Claude Code를 WSL 내부에서 실행 시 WSL 홈(`~/.claude`)을 사용 |
+| Native Linux (Ubuntu, Debian, Fedora, Arch 등) | 지원 | Node.js 18+ 패키지 매니저로 설치 |
+| macOS | 지원 | 별도 설정 없이 동작 |
+
+모든 플랫폼에서 동일한 코드가 동작합니다. Node.js의 `os`, `path` 모듈이 각 OS에 맞는 경로·리소스를 자동 처리합니다.
 
 ## Installation
 
@@ -66,13 +80,15 @@ git clone https://github.com/55002ghals/Window-Claude-Code-Statusline.git
 cd Window-Claude-Code-Statusline
 ```
 
+> **WSL / Native Linux 사용자**: Claude Code를 WSL 내부(또는 Linux)에서 실행한다면, 클론도 동일한 환경에서 수행하세요. Windows 경로(`C:\...`)가 아닌 Linux 경로(`/home/<user>/...` 또는 `/mnt/c/...`)에서 설치해야 `~/.claude/settings.json`이 올바른 홈 디렉토리를 가리킵니다.
+
 ### 2. 자동 설치 (권장)
 
 ```bash
 node install.js
 ```
 
-`~/.claude/settings.json`에 `statusLine` 설정이 자동으로 추가됩니다. 기존 settings.json은 백업됩니다.
+`~/.claude/settings.json`에 `statusLine` 설정이 자동으로 추가됩니다. 기존 settings.json은 백업됩니다. Windows/WSL/Linux/macOS 모두 동일한 명령으로 설치됩니다.
 
 ### 3. 수동 설치
 
