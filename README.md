@@ -107,6 +107,46 @@ node install.js
 
 새 Claude Code 세션을 열면 CLI 하단에 StatusLine이 표시됩니다.
 
+### WSL 빠른 설치 (Ubuntu/Debian 기준)
+
+WSL 내부에서 Claude Code를 실행하는 경우 아래 절차를 그대로 따르면 됩니다. **Windows 드라이브(`/mnt/c`)가 아니라 WSL의 Linux 홈(`~`)에서 클론**하세요. `/mnt/c` 아래는 입출력이 느리고 파일 권한 문제가 생길 수 있습니다.
+
+```bash
+# 1) Node.js 18+ 설치 (이미 있으면 생략)
+# NodeSource 저장소 사용 예시:
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt-get install -y nodejs
+node --version   # v20.x 확인
+
+# 2) Claude Code가 WSL에 없다면 설치
+npm install -g @anthropic-ai/claude-code
+claude --version # v2.1.6 이상 확인
+
+# 3) 저장소 클론 (WSL 홈 디렉토리에)
+cd ~
+git clone https://github.com/55002ghals/Window-Claude-Code-Statusline.git
+cd Window-Claude-Code-Statusline
+
+# 4) 자동 설치 — ~/.claude/settings.json 에 statusLine 항목을 추가
+node install.js
+
+# 5) Claude Code 재시작
+# 실행 중인 세션을 종료한 뒤 다시 `claude` 를 실행하면 하단에 StatusLine이 나타납니다.
+```
+
+설치 후 `~/.claude/settings.json` 에 다음과 비슷한 항목이 추가되었는지 확인:
+
+```json
+{
+  "statusLine": {
+    "type": "command",
+    "command": "node /home/<your-user>/Window-Claude-Code-Statusline/src/index.js"
+  }
+}
+```
+
+> **주의**: Windows 쪽에 설치된 Claude Code와 WSL 쪽에 설치된 Claude Code는 서로 다른 홈 디렉토리(`C:\Users\<user>\.claude` vs `/home/<user>/.claude`)를 사용합니다. 실제로 사용하는 쪽에서 `node install.js`를 실행해야 합니다. 둘 다 사용한다면 각 환경에서 한 번씩 클론·설치하세요.
+
 ## Configuration
 
 ### 기본 설정 (config.json)
